@@ -149,9 +149,20 @@ function(BaseView, Backbone, Handlebars, $, _, Raty, Marketplace) {
             data.context = this.serviceItemModel.context;
             // Ensure start button is hidden for stack if current OWF
             // version is not able to start a stack
-            data.showAddbutton = Marketplace.widget.isWidget() ?
-                (this.serviceItemModel.isAddable() && (!this.serviceItemModel.isStack() || !this.isItemInOwf || Marketplace.widget.isStackLaunchable())) :
-                    (this.serviceItemModel.isAddable() && !this.serviceItemModel.isStack() && this.serviceItemModel.hasValidLaunchUrl());
+            // try {
+            //     data.showAddbutton = Marketplace.widget.isWidget()
+            //     ? (this.serviceItemModel.isAddable()
+            //         && (!this.serviceItemModel.isStack() || !this.isItemInOwf || Marketplace.widget.isStackLaunchable()))
+            //     : (this.serviceItemModel.isAddable()
+            //         && !this.serviceItemModel.isStack() && this.serviceItemModel.hasValidLaunchUrl());
+            // }
+            // catch (e) {
+            //     data.showAddbutton = this.serviceItemModel.isEnabled() && this.serviceItemModel.isApproved();
+            // }
+            // 
+            data.showAddbutton = this.serviceItemModel.isEnabled() && this.serviceItemModel.isApproved();
+
+
             data.addButtonText = Marketplace.widget.isWidget() && this.serviceItemModel.isOzoneAware() && !this.isItemInOwf ? 'Add' : 'Start';
             data.isSubmitted = this.serviceItemModel.isSubmitted();
 
@@ -240,6 +251,28 @@ function(BaseView, Backbone, Handlebars, $, _, Raty, Marketplace) {
             var icon = me.$icon.get(0);
             var url = me.serviceItemModel.isAffiliated && this.serviceItemModel.context;
             var launchUrl = me.serviceItemModel.get('launchUrl');
+
+
+            try {
+                if (me.serviceItemModel.isEnabled() && me.serviceItemModel.isApproved() ) {
+                    if (window.parent && window.parent.location !== undefined && window.parent.location !== window.location) {
+                        var $btn = $(evt.target).attr('disabled', true);
+                        var oldText = $btn.text();
+                        $btn.text(oldText + 'ing...');
+
+                        // var messageFailed = true;
+                        var data = me.serviceItemModel.toJSON();
+                        // console.log("Posting", data)
+                        window.parent.postMessage(data, "*");
+                        $btn.text(oldText);
+                        $btn.attr('disabled', false);
+                        return;
+                    }
+                }
+            }
+            catch (e) {
+                console.log(".")
+            }
 
             if(Marketplace.widget.isWidget()) {
                 var $btn = $(evt.target).attr('disabled', true);

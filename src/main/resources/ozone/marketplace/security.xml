@@ -52,7 +52,7 @@
     <sec:http realm="OZONE">
 
         <sec:port-mappings>
-            <sec:port-mapping http="8080" https="8443"/>
+            <sec:port-mapping http="8080" https="8444"/>
         </sec:port-mappings>
 
         <!-- CSRF protection must be disabled (enabled by default) to allow POST (& PATCH, PUT, DELETE) requests,
@@ -61,9 +61,20 @@
 
         <!-- Set the 'X-Frame-Options' header (defaults to DENY) to allow widgets to run in iframes -->
         <sec:headers>
-            <sec:frame-options policy="SAMEORIGIN"/>
-            <!-- Allow localhost connection from OWF -->
-            <!--<sec:frame-options policy="ALLOW-FROM" strategy="static" value="http://localhost:8099" />-->
+
+            <!-- Allow connection from OWF -->
+
+            <!-- For IE - note that ALLOW-FROM only allows a single url. So if you've got multiple instances of -->
+            <!-- OWF, you'll probably need to just comment-out the below line. Or just not use IE.-->
+            <!-- <sec:frame-options policy="ALLOW-FROM" strategy="static" value="http://localhost:3000" /> -->
+
+            <!-- For Chrome, FF (>58), Edge, Opera, and safari. Lets you allow as many urls as needed. -->
+            <sec:header name="Content-Security-Policy" value="frame-ancestors
+                http://localhost:3000/
+                http://192.168.1.8:3000/
+            "/>
+
+
             <!--<sec:hsts disabled="true"/>-->
         </sec:headers>
 

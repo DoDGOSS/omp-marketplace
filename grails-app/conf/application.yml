@@ -11,6 +11,12 @@ grails:
         transactionManagement:
             proxies: false
 
+    cors:
+        enabled: true
+        allowedOrigins:
+            - http://192.168.1.8:3000
+            - http://192.168.1.8:8000
+
     gorm:
         reactor:
             # Whether to translate GORM events into Reactor events
@@ -131,9 +137,13 @@ environments:
         server:
             port: 8090
 
+    development:
+        server:
+            port: 8444
+
     production:
         server:
-            port: 8443
+            port: 8444
             ssl:
                 enabled: true
                 key-store: './certs/keystore.jks'
@@ -349,7 +359,7 @@ marketplace:
             description: "Retired description"
             isPublished: false
 
-        owfWidgetTypes: 
+        owfWidgetTypes:
           - title: "standard"
             description: "Widget will appear in OWF's Launch Menu"
           - title: "metric"
