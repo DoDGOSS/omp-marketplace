@@ -71,7 +71,7 @@
             <!-- For Chrome, FF (>58), Edge, Opera, and safari. Lets you allow as many urls as needed. -->
             <sec:header name="Content-Security-Policy" value="frame-ancestors
                 http://localhost:3000/
-                http://192.168.1.8:3000/
+                http://192.168.1.2:3000/
             "/>
 
 
